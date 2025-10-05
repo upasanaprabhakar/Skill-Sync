@@ -1,0 +1,74 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  MENTOR
+  BOTH
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  name            String?
+  password        String
+  bio             String?
+  role            UserRole @default(STUDENT)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Skills relationships
+  skillsKnown     Skill[]  @relation("UserKnownSkills")
+  skillsLearning  Skill[]  @relation("UserLearningSkills")
+  
+  // Connections as mentor
+  mentorConnections    Connection[] @relation("MentorConnections")
+  // Connections as student
+  studentConnections   Connection[] @relation("StudentConnections")
+  
+  @@map("users")
+}
+
+model Skill {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  category    String?  // e.g., "Web Development", "DSA", "Communication"
+  createdAt   DateTime @default(now())
+  
+  // Users who know this skill (mentors/experts)
+  knownBy     User[]   @relation("UserKnownSkills")
+  // Users who want to learn this skill (students)
+  learningBy  User[]   @relation("UserLearningSkills")
+  
+  @@map("skills")
+}
+
+model Connection {
+  id          Int              @id @default(autoincrement())
+  mentorId    Int
+  studentId   Int
+  status      ConnectionStatus @default(PENDING)
+  message     String?          // Optional message when requesting connection
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  mentor      User             @relation("MentorConnections", fields: [mentorId], references: [id], onDelete: Cascade)
+  student     User             @relation("StudentConnections", fields: [studentId], references: [id], onDelete: Cascade)
+  
+  @@unique([mentorId, studentId])
+  @@map("connections")
+}
