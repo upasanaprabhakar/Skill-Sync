@@ -11,7 +11,7 @@ It aims to make collaborative learning easier by enabling users to find mentors 
   <li><strong>Frontend:</strong> Next.js, React</li>
   <li><strong>Backend:</strong> Next.js API Routes, Prisma ORM</li>
   <li><strong>Database:</strong> PostgreSQL</li>
-  <li><strong>Styling:</strong> CSS (Pastel Breeze palette)</li>
+  <li><strong>Styling:</strong> CSS </li>
 </ul>
 
 <h2>📘 Overview</h2>
