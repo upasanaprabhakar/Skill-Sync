@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1>🧠 SkillSync</h1>
 
-## Getting Started
+<p><strong>SkillSync</strong> is a web application that connects students and mentors based on the skills they want to <strong>learn</strong> or <strong>share</strong>.<br>
+It aims to make collaborative learning easier by enabling users to find mentors and peers with matching skill interests.</p>
 
-First, run the development server:
+<h2>🚀 Current Status</h2>
+<p>The project is currently in its <strong>initial development stage</strong> — authentication, landing page, and profile setup features are being built.</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<h2>💻 Tech Stack</h2>
+<ul>
+  <li><strong>Frontend:</strong> Next.js, React</li>
+  <li><strong>Backend:</strong> Next.js API Routes, Prisma ORM</li>
+  <li><strong>Database:</strong> PostgreSQL</li>
+  <li><strong>Styling:</strong> CSS (Pastel Breeze palette)</li>
+</ul>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<h2>📘 Overview</h2>
+<ul>
+  <li>Create and manage personalized profiles.</li>
+  <li>Choose roles as <strong>Mentor</strong>, <strong>Student</strong>, or <strong>Both</strong>.</li>
+  <li>Discover skills, courses, and mentors for guided learning.</li>
+</ul>
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p>🛠 <em>Work in progress — more features coming soon!</em></p>
