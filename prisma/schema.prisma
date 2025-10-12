@@ -1,4 +1,5 @@
 // prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,39 +21,47 @@ enum ConnectionStatus {
   REJECTED
 }
 
+enum NoteTag {
+  GOAL
+  RESOURCE
+  PROGRESS
+  HOMEWORK
+  GENERAL
+}
+
 model User {
-  id              Int      @id @default(autoincrement())
-  email           String   @unique
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
   name            String?
   password        String
   bio             String?
-  role            UserRole @default(STUDENT)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  role            UserRole  @default(STUDENT)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   
-  // Skills relationships
-  skillsKnown     Skill[]  @relation("UserKnownSkills")
-  skillsLearning  Skill[]  @relation("UserLearningSkills")
+  skillsKnown     Skill[]   @relation("UserKnownSkills")
+  skillsLearning  Skill[]   @relation("UserLearningSkills")
   
-  // Connections as mentor
-  mentorConnections    Connection[] @relation("MentorConnections")
-  // Connections as student
-  studentConnections   Connection[] @relation("StudentConnections")
+  mentorConnections   Connection[] @relation("MentorConnections")
+  studentConnections  Connection[] @relation("StudentConnections")
+
+  sentMessages        Message[]    @relation("SentMessages")
+  receivedMessages    Message[]    @relation("ReceivedMessages")
   
+  notes               Note[]       @relation("UserNotes")
+
   @@map("users")
 }
 
 model Skill {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
-  category    String?  // e.g., "Web Development", "DSA", "Communication"
-  createdAt   DateTime @default(now())
+  category    String?
+  createdAt   DateTime  @default(now())
   
-  // Users who know this skill (mentors/experts)
-  knownBy     User[]   @relation("UserKnownSkills")
-  // Users who want to learn this skill (students)
-  learningBy  User[]   @relation("UserLearningSkills")
+  knownBy     User[]    @relation("UserKnownSkills")
+  learningBy  User[]    @relation("UserLearningSkills")
   
   @@map("skills")
 }
@@ -62,13 +71,56 @@ model Connection {
   mentorId    Int
   studentId   Int
   status      ConnectionStatus @default(PENDING)
-  message     String?          // Optional message when requesting connection
+  message     String?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   
   mentor      User             @relation("MentorConnections", fields: [mentorId], references: [id], onDelete: Cascade)
   student     User             @relation("StudentConnections", fields: [studentId], references: [id], onDelete: Cascade)
-  
+
+  messages    Message[]
+  notes       Note[]
+
   @@unique([mentorId, studentId])
   @@map("connections")
+}
+
+model Message {
+  id           Int        @id @default(autoincrement())
+  senderId     Int
+  receiverId   Int
+  connectionId Int
+  content      String     @db.Text
+  read         Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  
+  sender       User       @relation("SentMessages", fields: [senderId], references: [id])
+  receiver     User       @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  
+  @@index([connectionId])
+  @@index([senderId, receiverId])
+  @@map("messages")
+}
+
+model Note {
+  id           Int        @id @default(autoincrement())
+  connectionId Int
+  title        String
+  content      String     @db.Text
+  createdBy    Int
+  tags         NoteTag[]
+  isPinned     Boolean    @default(false)
+  fileUrl      String?
+  fileName     String?
+  fileType     String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  
+  connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  creator      User       @relation("UserNotes", fields: [createdBy], references: [id])
+  
+  @@index([connectionId])
+  @@index([createdBy])
+  @@map("notes")
 }

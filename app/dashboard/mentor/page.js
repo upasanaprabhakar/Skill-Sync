@@ -1,34 +1,77 @@
+// app/dashboard/mentor/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import styles from './page.module.css';
+import ChatWindow from '../../components/ChatWindow';
+import LearningSpace from '../../components/LearningSpace';
+import { useSocket } from '../../context/SocketContext';
 import { 
   SearchIcon, UserIcon, CheckCircleIcon,
-  XCircleIcon, MessageIcon, EditIcon, LogOutIcon, SaveIcon
+  XCircleIcon, MessageIcon, EditIcon, LogOutIcon, SaveIcon, FileIcon, XIcon
 } from '../../components/icons';
 
 export default function MentorDashboard() {
   const router = useRouter();
+  const { socket, isConnected } = useSocket();
   const [user, setUser] = useState(null);
   const [students, setStudents] = useState([]);
   const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('discover');
+  const [activeTab, setActiveTab] = useState('requests');
   const [searchTerm, setSearchTerm] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [editFormData, setEditFormData] = useState({
     name: '',
     bio: ''
   });
+  const [activeChatConnection, setActiveChatConnection] = useState(null);
+  const [activeLearningConnection, setActiveLearningConnection] = useState(null);
+  const [unreadCounts, setUnreadCounts] = useState({});
 
   useEffect(() => {
     checkAuth();
   }, []);
 
+  useEffect(() => {
+    if (socket && user) {
+      console.log('🔌 Setting up WebSocket listeners for mentor:', user.id);
+      
+      const handleMessageNotification = (data) => {
+        console.log('📬 New message notification:', data);
+        
+        if (!activeChatConnection || activeChatConnection.id !== data.connectionId) {
+          setUnreadCounts(prev => ({
+            ...prev,
+            [data.connectionId]: (prev[data.connectionId] || 0) + 1
+          }));
+        }
+        
+        loadConnections();
+      };
+
+      const handleConnectionUpdate = (data) => {
+        console.log('🔄 Connection update:', data);
+        loadConnections();
+      };
+
+      socket.on('message-notification', handleMessageNotification);
+      socket.on('connection-update', handleConnectionUpdate);
+
+      return () => {
+        console.log('🔌 Cleaning up WebSocket listeners');
+        socket.off('message-notification', handleMessageNotification);
+        socket.off('connection-update', handleConnectionUpdate);
+      };
+    }
+  }, [socket, user, activeChatConnection]);
+
   const checkAuth = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
+      toast.error('Please login to continue');
       router.push('/login');
       return;
     }
@@ -55,9 +98,13 @@ export default function MentorDashboard() {
       const studentsData = await studentsRes.json();
       const connectionsData = await connectionsRes.json();
 
-      console.log('User data:', userData);
-      console.log('Students data:', studentsData);
-      console.log('Connections data:', connectionsData);
+      // Verify user is actually a mentor
+      if (userData.user && userData.user.role !== 'MENTOR') {
+        console.error('User is not a mentor, redirecting...');
+        toast.error('Access denied. Please login with correct credentials.');
+        router.push('/login');
+        return;
+      }
 
       setUser(userData.user);
       setStudents(studentsData.users || []);
@@ -68,65 +115,99 @@ export default function MentorDashboard() {
       });
     } catch (error) {
       console.error('Error loading dashboard:', error);
-      alert('Failed to load dashboard. Please try again.');
+      toast.error('Failed to load dashboard. Please refresh the page.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleConnectionAction = async (connectionId, status) => {
+  const loadConnections = async () => {
+    const userId = localStorage.getItem('userId');
     try {
-      const response = await fetch(`/api/connections/${connectionId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      });
-
-      if (response.ok) {
-        await loadDashboardData();
-        alert(`Connection ${status.toLowerCase()}!`);
-      } else {
-        alert('Failed to update connection');
-      }
+      const response = await fetch(`/api/connections?userId=${userId}`);
+      const data = await response.json();
+      setConnections(data.connections || []);
     } catch (error) {
-      console.error('Error updating connection:', error);
-      alert('Failed to update connection. Please try again.');
+      console.error('Error loading connections:', error);
     }
+  };
+
+  const handleConnectionAction = async (connectionId, status) => {
+    const actionPromise = fetch(`/api/connections/${connectionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    }).then(async (res) => {
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Failed to update connection');
+      }
+      await loadDashboardData();
+    });
+
+    toast.promise(actionPromise, {
+      loading: `${status === 'ACCEPTED' ? 'Accepting' : 'Declining'} request...`,
+      success: `Connection ${status.toLowerCase()} successfully!`,
+      error: (err) => err.message || 'Failed to update connection',
+    });
   };
 
   const handleUpdateProfile = async () => {
     if (!editFormData.name.trim()) {
-      alert('Name cannot be empty');
+      toast.error('Name cannot be empty');
       return;
     }
 
-    try {
-      const response = await fetch(`/api/users/${user.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: editFormData.name.trim(),
-          bio: editFormData.bio.trim()
-        })
-      });
-
-      if (response.ok) {
-        setEditMode(false);
-        await loadDashboardData();
-        alert('Profile updated successfully!');
-      } else {
-        alert('Failed to update profile');
+    const updatePromise = fetch(`/api/users/${user.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: editFormData.name.trim(),
+        bio: editFormData.bio.trim()
+      })
+    }).then(async (res) => {
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Failed to update profile');
       }
-    } catch (error) {
-      console.error('Failed to update profile:', error);
-      alert('Failed to update profile. Please try again.');
-    }
+      setEditMode(false);
+      await loadDashboardData();
+    });
+
+    toast.promise(updatePromise, {
+      loading: 'Updating profile...',
+      success: 'Profile updated successfully!',
+      error: (err) => err.message || 'Failed to update profile',
+    });
   };
 
   const handleLogout = () => {
     localStorage.removeItem('userId');
     localStorage.removeItem('userEmail');
+    toast.success('Logged out successfully');
     router.push('/');
+  };
+
+  const handleOpenChat = (connection) => {
+    setActiveChatConnection(connection);
+    setActiveLearningConnection(null);
+    setUnreadCounts(prev => ({
+      ...prev,
+      [connection.id]: 0
+    }));
+  };
+
+  const handleOpenLearningSpace = (connection) => {
+    setActiveLearningConnection(connection);
+    setActiveChatConnection(null);
+  };
+
+  const handleCloseChat = () => {
+    setActiveChatConnection(null);
+  };
+
+  const handleCloseLearningSpace = () => {
+    setActiveLearningConnection(null);
   };
 
   const filteredStudents = students.filter(student =>
@@ -158,6 +239,12 @@ export default function MentorDashboard() {
           </div>
           <h2>{user?.name}</h2>
           <p className={styles.role}>Mentor</p>
+          {isConnected && (
+            <p className={styles.connectionStatus}>
+              <span className={styles.statusDot}></span>
+              Online
+            </p>
+          )}
         </div>
 
         <div className={styles.stats}>
@@ -299,6 +386,7 @@ export default function MentorDashboard() {
                 <div className={styles.empty}>
                   <MessageIcon size={48} />
                   <p>No pending requests</p>
+                  <p className={styles.emptySubtext}>Check back later for new connection requests</p>
                 </div>
               ) : (
                 pendingRequests.map(connection => (
@@ -371,6 +459,7 @@ export default function MentorDashboard() {
                 <div className={styles.empty}>
                   <UserIcon size={48} />
                   <p>No active students yet</p>
+                  <p className={styles.emptySubtext}>Accept connection requests to start mentoring</p>
                 </div>
               ) : (
                 activeConnections.map(connection => (
@@ -407,6 +496,27 @@ export default function MentorDashboard() {
                           day: 'numeric'
                         })}
                       </span>
+                    </div>
+                    <div className={styles.cardActions}>
+                      <button 
+                        className={styles.chatBtn}
+                        onClick={() => handleOpenChat(connection)}
+                      >
+                        <MessageIcon size={18} />
+                        Chat
+                        {unreadCounts[connection.id] > 0 && (
+                          <span className={styles.unreadBadge}>
+                            {unreadCounts[connection.id]}
+                          </span>
+                        )}
+                      </button>
+                      <button 
+                        className={styles.notesBtn}
+                        onClick={() => handleOpenLearningSpace(connection)}
+                      >
+                        <FileIcon size={18} />
+                        Notes
+                      </button>
                     </div>
                   </div>
                 ))
@@ -462,17 +572,32 @@ export default function MentorDashboard() {
                   </div>
                   <h2>{user?.name}</h2>
                   <p className={styles.email}>{user?.email}</p>
-                  <p className={styles.bio}>{user?.bio || 'No bio added yet'}</p>
+                  <p className={styles.bio}>{user?.bio || 'No bio added yet. Click "Edit Profile" to add one.'}</p>
+                  <div className={styles.profileSkills}>
+                    <h3>My Expertise:</h3>
+                    <div className={styles.skillsList}>
+                      {user?.skillsKnown && user.skillsKnown.length > 0 ? (
+                        user.skillsKnown.map(skill => (
+                          <span key={skill.id} className={styles.skillTag}>
+                            {skill.name}
+                          </span>
+                        ))
+                      ) : (
+                        <p className={styles.noSkills}>No skills added yet. Visit your profile setup to add skills.</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className={styles.editForm}>
                   <div className={styles.formGroup}>
-                    <label>Name</label>
+                    <label>Name *</label>
                     <input
                       type="text"
                       value={editFormData.name}
                       onChange={(e) => setEditFormData({...editFormData, name: e.target.value})}
                       className={styles.input}
+                      placeholder="Enter your full name"
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -482,8 +607,12 @@ export default function MentorDashboard() {
                       onChange={(e) => setEditFormData({...editFormData, bio: e.target.value})}
                       className={styles.textarea}
                       rows={4}
-                      placeholder="Tell students about your expertise..."
+                      placeholder="Tell students about your expertise and teaching style..."
+                      maxLength={500}
                     />
+                    <span className={styles.helperText}>
+                      {editFormData.bio.length}/500 characters
+                    </span>
                   </div>
                 </div>
               )}
@@ -491,6 +620,32 @@ export default function MentorDashboard() {
           </>
         )}
       </main>
+
+      {activeChatConnection && (
+        <div className={styles.chatOverlay}>
+          <ChatWindow
+            connection={activeChatConnection}
+            currentUserId={user.id}
+            onClose={handleCloseChat}
+          />
+        </div>
+      )}
+
+      {activeLearningConnection && (
+        <div className={styles.chatOverlay}>
+          <div className={styles.learningSpaceContainer}>
+            <div className={styles.learningSpaceHeader}>
+              <button className={styles.closeBtn} onClick={handleCloseLearningSpace}>
+                <XIcon size={24} />
+              </button>
+            </div>
+            <LearningSpace
+              connection={activeLearningConnection}
+              currentUserId={user.id}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

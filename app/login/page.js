@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import styles from '../styles/AuthForm.module.css';
 import Link from 'next/link';
 import Layout from '../components/layout';
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -17,32 +17,35 @@ export default function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError('');
+    
+    if (!form.email.trim()) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    if (!form.password) {
+      toast.error('Please enter your password');
+      return;
+    }
+
     setLoading(true);
 
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: form.email,
-        password: form.password,
-      });
-
-      if (result.error) {
-        setError(result.error);
-        setLoading(false);
-        return;
+    const loginPromise = signIn('credentials', {
+      redirect: false,
+      email: form.email,
+      password: form.password,
+    }).then(async (result) => {
+      if (result?.error) {
+        throw new Error(result.error);
       }
 
-      // Fetch user data to get userId and role
       const userResponse = await fetch('/api/auth/session');
       const sessionData = await userResponse.json();
       
       if (sessionData?.user) {
-        // Store userId in localStorage
         localStorage.setItem('userId', sessionData.user.id.toString());
         localStorage.setItem('userEmail', sessionData.user.email);
 
-        // Redirect based on role
         if (sessionData.user.role === 'MENTOR') {
           router.push('/dashboard/mentor');
         } else if (sessionData.user.role === 'STUDENT') {
@@ -50,14 +53,21 @@ export default function LoginPage() {
         } else {
           router.push('/dashboard');
         }
-      } else {
-        router.push('/dashboard');
+        
+        return sessionData.user;
       }
-    } catch (err) {
-      setError('Login failed. Please try again.');
-    } finally {
+    });
+
+    toast.promise(
+      loginPromise,
+      {
+        loading: 'Logging in...',
+        success: 'Welcome back!',
+        error: (err) => err.message || 'Invalid email or password',
+      }
+    ).catch(() => {
       setLoading(false);
-    }
+    });
   }
 
   return (
@@ -66,13 +76,13 @@ export default function LoginPage() {
         <h1 className={styles.heading}>Welcome Back</h1>
         <p className={styles.subheading}>Sign in to continue your journey with SkillSync.</p>
         <form onSubmit={handleSubmit}>
-          {error && <div className={styles.error}>{error}</div>}
           <input
             type="email"
             name="email"
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
+            disabled={loading}
             required
           />
           <input
@@ -81,6 +91,7 @@ export default function LoginPage() {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
+            disabled={loading}
             required
           />
           <div className={styles.optionsContainer}>

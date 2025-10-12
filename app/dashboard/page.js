@@ -29,12 +29,13 @@ export default function DashboardPage() {
       
       if (data.user) {
         setUser(data.user);
-        // If user already has a role, redirect them
-        if (data.user.role === 'MENTOR') {
+        // Only redirect if user has completed profile with role AND skills
+        if (data.user.role === 'MENTOR' && data.user.skillsKnown?.length > 0) {
           router.push('/dashboard/mentor');
-        } else if (data.user.role === 'STUDENT') {
+        } else if (data.user.role === 'STUDENT' && data.user.skillsLearning?.length > 0) {
           router.push('/dashboard/student');
         }
+        // If user has role but no skills, stay on this page to let them choose/update
       }
     } catch (error) {
       console.error('Error loading user:', error);
@@ -47,26 +48,8 @@ export default function DashboardPage() {
   const handleRoleSelection = async (role) => {
     if (!user) return;
 
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/users/${user.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role })
-      });
-
-      if (response.ok) {
-        if (role === 'MENTOR') {
-          router.push('/dashboard/mentor');
-        } else {
-          router.push('/dashboard/student');
-        }
-      }
-    } catch (error) {
-      console.error('Error updating role:', error);
-    } finally {
-      setLoading(false);
-    }
+    // Redirect to profile page to complete setup with skills
+    router.push(`/profile?role=${role}`);
   };
 
   const handleLogout = () => {
@@ -104,7 +87,7 @@ export default function DashboardPage() {
 
       <main className={styles.mainContent}>
         <div className={styles.welcomeSection}>
-          <h1>Welcome to SkillSync, {user?.name}! 🎉</h1>
+          <h1>Welcome to SkillSync, {user?.name}!</h1>
           <p className={styles.subtitle}>
             Let's get you started on your learning journey. Choose how you'd like to participate:
           </p>

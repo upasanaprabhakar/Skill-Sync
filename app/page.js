@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import {
   Logo, UsersIcon, SearchIcon, ChartIcon, BookIcon, TargetIcon,
-  SparklesIcon, ArrowRightIcon, HeartIcon
+  ArrowRightIcon, HeartIcon
 } from './components/icons';
 
 export default function LandingPage() {
@@ -13,7 +13,6 @@ export default function LandingPage() {
 
   return (
     <div className={styles.landingPage}>
-      {/* Navigation */}
       <nav className={styles.navbar}>
         <div className={`container ${styles.navContainer}`}>
           <Link href="/" className={styles.logo}>
@@ -23,7 +22,7 @@ export default function LandingPage() {
           <ul className={styles.navLinks}>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="skills">Skills</a></li>
+            <li><a href="#skills">Skills</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
           
@@ -44,7 +43,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section id="home" className={styles.hero}>
         <div className="container">
           <div className={styles.heroContent}>
@@ -73,7 +71,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How SkillSync Works */}
       <section id="about" className={styles.howItWorks}>
         <div className="container">
           <h2 className={styles.sectionTitle}>How SkillSync Works</h2>
@@ -117,7 +114,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Explore Skills Section */}
       <section id="skills" className={styles.exploreSkills}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Explore Popular Skills</h2>
@@ -171,7 +167,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Banner */}
       <section className={styles.ctaBanner}>
         <div className="container">
           <div className={styles.ctaContent}>
@@ -199,7 +194,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer id="contact" className={styles.footer}>
         <div className="container">
           <div className={styles.footerContent}>

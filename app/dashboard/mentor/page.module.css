@@ -1,3 +1,4 @@
+/* app/dashboard/mentor/page.module.css*/
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -842,4 +843,1087 @@
     padding: 0.75rem 0.875rem;
     font-size: 0.95rem;
   }
+}
+
+/* ADD THESE STYLES TO: app/mentor-dashboard/page.module.css */
+
+/* Connection Status */
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 12px;
+  font-size: 12px;
+  color: #10B981;
+  font-weight: 500;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Students List Grid */
+.studentsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.studentCard {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+}
+
+.studentCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.studentHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.studentInfo {
+  flex: 1;
+}
+
+.studentInfo h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.studentInfo p {
+  margin: 0;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+/* Chat Button */
+.chatBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-top: auto;
+}
+
+.chatBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.chatBtn:active {
+  transform: translateY(0);
+}
+
+/* Unread Badge */
+.unreadBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #EF4444;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+}
+
+/* Request Message Styling */
+.requestMessage {
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.requestMessage p {
+  margin: 0;
+  font-size: 14px;
+  color: #4B5563;
+  line-height: 1.6;
+}
+
+.requestMessage strong {
+  color: #1F2937;
+  font-weight: 600;
+}
+
+/* Student Skills in Request Card */
+.studentSkills {
+  margin: 16px 0;
+}
+
+.studentSkills .label {
+  font-size: 13px;
+  color: #6B7280;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Request Actions */
+.requestActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.acceptBtn,
+.rejectBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.acceptBtn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+}
+
+.acceptBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+.rejectBtn {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: white;
+}
+
+.rejectBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.acceptBtn:active,
+.rejectBtn:active {
+  transform: translateY(0);
+}
+
+/* Empty State Subtext */
+.emptySubtext {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #9CA3AF;
+}
+
+/* Profile Avatar */
+.profileAvatar {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px 0 rgba(99, 102, 241, 0.4);
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .studentsList {
+    grid-template-columns: 1fr;
+  }
+
+  .requestActions {
+    flex-direction: column;
+  }
+
+  .acceptBtn,
+  .rejectBtn,
+  .chatBtn {
+    width: 100%;
+  }
+
+  .connectionStatus {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+}
+
+.primaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-top: 16px;
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #5558E3 0%, #6B3FA0 100%);
+}
+
+.primaryBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+}
+
+.primaryBtn:disabled {
+  background: #E5E7EB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ============================================= */
+/* UNREAD BADGE - Enhanced Animation */
+/* ============================================= */
+
+.unreadBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: white;
+  border-radius: 50%;
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+  padding: 0 6px;
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.8);
+  }
+}
+
+/* ============================================= */
+/* CONNECTION STATUS - Enhanced Styling */
+/* ============================================= */
+
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: rgba(16, 185, 129, 0.12);
+  border-radius: 20px;
+  font-size: 13px;
+  color: #10B981;
+  font-weight: 600;
+  justify-content: center;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: statusPulse 2s infinite;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes statusPulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: scale(0.85);
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* ============================================= */
+/* CARD ENHANCEMENTS */
+/* ============================================= */
+
+.card {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
+  border-color: #A78BFA;
+}
+
+/* ============================================= */
+/* CHAT OVERLAY */
+/* ============================================= */
+
+.chatOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeInOverlay 0.25s ease;
+  backdrop-filter: blur(2px);
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* ============================================= */
+/* BUTTON STATES - Enhanced */
+/* ============================================= */
+
+.acceptBtn {
+  flex: 1;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);
+}
+
+.acceptBtn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px 0 rgba(16, 185, 129, 0.5);
+}
+
+.acceptBtn:active {
+  transform: translateY(0);
+}
+
+.rejectBtn {
+  flex: 1;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  background-color: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FCA5A5;
+}
+
+.rejectBtn:hover {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  color: white;
+  border-color: #DC2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.4);
+}
+
+.rejectBtn:active {
+  transform: translateY(0);
+}
+
+/* ============================================= */
+/* SECONDARY BUTTON - Enhanced */
+/* ============================================= */
+
+.secondaryBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background-color: #F3F4F6;
+  color: #1F2937;
+  border: 1px solid #E5E7EB;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.938rem;
+}
+
+.secondaryBtn:hover {
+  background-color: #E5E7EB;
+  border-color: #D1D5DB;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.secondaryBtn:active {
+  transform: translateY(0);
+}
+
+/* ============================================= */
+/* AVATAR ENHANCEMENTS */
+/* ============================================= */
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.5);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+.cardHeader .avatar {
+  width: 50px;
+  height: 50px;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.profileAvatar {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 28px 0 rgba(102, 126, 234, 0.5);
+  border: 4px solid rgba(255, 255, 255, 0.95);
+}
+
+/* ============================================= */
+/* EMPTY STATE - Enhanced */
+/* ============================================= */
+
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #9CA3AF;
+  grid-column: 1 / -1;
+}
+
+.empty svg {
+  opacity: 0.35;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.empty p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.emptySubtext {
+  font-size: 0.95rem;
+  color: #6B7280;
+  margin-top: 0.5rem;
+}
+
+/* ============================================= */
+/* RESPONSIVE UPDATES */
+/* ============================================= */
+
+@media (max-width: 768px) {
+  .primaryBtn {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .unreadBadge {
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+
+  .chatOverlay {
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  .connectionStatus {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .statusDot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 480px) {
+  .primaryBtn {
+    padding: 11px 16px;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .unreadBadge {
+    min-width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  .connectionStatus {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .statusDot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
+  }
+
+  .profileAvatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
+}
+
+/* ============================================= */
+/* ADDITIONAL ENHANCEMENTS */
+/* ============================================= */
+
+/* Skill Tags Enhancement */
+.skillTag {
+  background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+  color: #7C3AED;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.skillTag:hover {
+  background: linear-gradient(135deg, #E9D5FF 0%, #DDD6FE 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Request Card Enhancement */
+.requestCard {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.requestCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.requestCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  border-color: #A78BFA;
+}
+
+.requestCard:hover::before {
+  transform: scaleY(1);
+}
+
+/* Message Styling Enhancement */
+.message {
+  background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  color: #1F2937;
+  font-style: italic;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  border-left: 4px solid #A78BFA;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Loading State Enhancement */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #E5E7EB;
+  border-top-color: #667EEA;
+  border-right-color: #764BA2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Stat Item Enhancement */
+.statItem {
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+  border-radius: 0.75rem;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.statItem:hover {
+  background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.statNumber {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1F2937;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ADD THESE STYLES TO THE END OF: app/dashboard/mentor/page.module.css */
+
+/* Card Actions for Students Tab */
+.cardActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  position: relative;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+}
+
+.primaryBtn:hover {
+  background: linear-gradient(135deg, #5558E3 0%, #6B3FA0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+}
+
+.secondaryBtn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4);
+}
+
+.secondaryBtn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5);
+}
+
+/* Unread Badge */
+.unreadBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+/* Learning Space Overlay */
+.chatOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.learningSpaceContainer {
+  background: white;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 1400px;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.learningSpaceHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.4);
+}
+
+.closeBtn:hover {
+  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.5);
+}
+
+.closeBtn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Updates */
+@media (max-width: 768px) {
+  .cardActions {
+    flex-direction: column;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+  }
+
+  .learningSpaceContainer {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .chatOverlay {
+    padding: 0;
+  }
+
+  .learningSpaceHeader {
+    padding: 0.75rem 1rem;
+  }
+
+  .closeBtn {
+    padding: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .primaryBtn,
+  .secondaryBtn {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.813rem;
+  }
+
+  .unreadBadge {
+    width: 20px;
+    height: 20px;
+    font-size: 0.688rem;
+  }
+
+  .closeBtn {
+    padding: 0.5rem;
+  }
+}
+
+/* Card Actions - Consistent Button Sizing */
+.cardActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cardActions .chatBtn,
+.cardActions .notesBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.938rem;
+  height: 44px;
+}
+
+.cardActions .chatBtn {
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.cardActions .chatBtn:hover {
+  background: linear-gradient(135deg, #5558E3 0%, #6B3FA0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.cardActions .notesBtn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.cardActions .notesBtn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.cardActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.cardActions button,
+.cardActions .chatBtn,
+.cardActions .notesBtn,
+.cardActions .primaryBtn,
+.cardActions .secondaryBtn {
+  flex: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 0.875rem !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+.cardActions .chatBtn,
+.cardActions .primaryBtn {
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4) !important;
+}
+
+.cardActions .chatBtn:hover,
+.cardActions .primaryBtn:hover {
+  background: linear-gradient(135deg, #5558E3 0%, #6B3FA0 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5) !important;
+}
+
+.cardActions .notesBtn,
+.cardActions .secondaryBtn {
+      margin-top: 15px;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.4) !important;
+}
+
+.cardActions .notesBtn:hover,
+.cardActions .secondaryBtn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5) !important;
+}
+
+.cardActions .chatBtn:active,
+.cardActions .notesBtn:active,
+.cardActions .primaryBtn:active,
+.cardActions .secondaryBtn:active {
+  transform: translateY(0) !important;
 }
