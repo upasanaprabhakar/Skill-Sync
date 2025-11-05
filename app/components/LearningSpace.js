@@ -1,9 +1,11 @@
-// app/components/LearningSpace.js
+// app/components/LearningSpace.js 
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import styles from './LearningSpace.module.css';
+import HomeworkSection from './HomeworkSection';
+
 import {
   PlusIcon, SearchIcon, PinIcon, EditIcon, TrashIcon,
   DownloadIcon, FileIcon, XIcon, SaveIcon, EyeIcon
@@ -19,7 +21,7 @@ const TAG_COLORS = {
   GENERAL: '#6B7280'
 };
 
-export default function LearningSpace({ connection, currentUserId }) {
+export default function LearningSpace({ skillGroup, currentUserId }) {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,17 +38,31 @@ export default function LearningSpace({ connection, currentUserId }) {
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef(null);
 
-  const isMentor = connection.mentorId === currentUserId;
+  // Safety check - return early if skillGroup is not loaded
+  if (!skillGroup) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner}></div>
+        <p>Loading learning space...</p>
+      </div>
+    );
+  }
+
+  const isMentor = skillGroup.mentorId === currentUserId;
 
   useEffect(() => {
-    loadNotes();
-  }, [connection.id]);
+    if (skillGroup?.id) {
+      loadNotes();
+    }
+  }, [skillGroup?.id]);
 
   const loadNotes = async () => {
     try {
       setLoading(true);
+      console.log('📚 Loading notes for skill group:', skillGroup.id);
+      
       const response = await fetch(
-        `/api/notes?connectionId=${connection.id}&userId=${currentUserId}`
+        `/api/notes?skillGroupId=${skillGroup.id}&userId=${currentUserId}`
       );
       
       if (!response.ok) {
@@ -55,9 +71,10 @@ export default function LearningSpace({ connection, currentUserId }) {
       }
       
       const data = await response.json();
+      console.log('✅ Notes loaded:', data.notes?.length || 0);
       setNotes(data.notes || []);
     } catch (error) {
-      console.error('Error loading notes:', error);
+      console.error('❌ Error loading notes:', error);
       toast.error('Failed to load notes. Please try again.');
     } finally {
       setLoading(false);
@@ -81,7 +98,7 @@ export default function LearningSpace({ connection, currentUserId }) {
 
     const createPromise = (async () => {
       const data = new FormData();
-      data.append('connectionId', connection.id);
+      data.append('skillGroupId', skillGroup.id);
       data.append('userId', currentUserId);
       data.append('title', formData.title.trim());
       data.append('content', formData.content.trim());
@@ -167,7 +184,6 @@ export default function LearningSpace({ connection, currentUserId }) {
       return;
     }
 
-    // Create a custom confirmation toast
     toast((t) => (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <span style={{ fontWeight: '600', fontSize: '15px' }}>Delete Note?</span>
@@ -220,7 +236,6 @@ export default function LearningSpace({ connection, currentUserId }) {
   };
 
   const performDelete = async (noteId) => {
-
     const deletePromise = (async () => {
       const response = await fetch(`/api/notes/${noteId}`, {
         method: 'DELETE',
@@ -332,8 +347,12 @@ export default function LearningSpace({ connection, currentUserId }) {
     );
   };
 
+  // Filter notes to exclude HOMEWORK from the main grid
   const filteredNotes = notes
     .filter(note => {
+      // Exclude homework notes from main grid
+      if (note.tags.includes('HOMEWORK')) return false;
+      
       const matchesSearch = 
         note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         note.content.toLowerCase().includes(searchTerm.toLowerCase());
@@ -349,10 +368,6 @@ export default function LearningSpace({ connection, currentUserId }) {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
-  const otherUser = connection.mentorId === currentUserId
-    ? connection.student
-    : connection.mentor;
-
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
@@ -366,16 +381,16 @@ export default function LearningSpace({ connection, currentUserId }) {
     <div className={styles.learningSpace}>
       <div className={styles.header}>
         <div>
-          <h2>Learning Space</h2>
+          <h2>{skillGroup.name}</h2>
           <p>
             {isMentor 
-              ? `Shared notes with ${otherUser?.name}`
-              : `Notes from your mentor ${otherUser?.name}`
+              ? ` ${skillGroup.skill.name} - Shared with ${skillGroup._count.connections} students`
+              : ` ${skillGroup.skill.name} - Taught by ${skillGroup.mentor.name}`
             }
           </p>
           {!isMentor && (
             <p className={styles.viewOnlyNotice}>
-              📖 View-only mode - Only your mentor can create and edit notes
+               View-only mode - Only your mentor can create and edit notes
             </p>
           )}
         </div>
@@ -402,7 +417,7 @@ export default function LearningSpace({ connection, currentUserId }) {
         </div>
         
         <div className={styles.tagFilters}>
-          {TAG_OPTIONS.map(tag => (
+          {TAG_OPTIONS.filter(tag => tag !== 'HOMEWORK').map(tag => (
             <button
               key={tag}
               className={`${styles.tagFilter} ${
@@ -511,7 +526,7 @@ export default function LearningSpace({ connection, currentUserId }) {
 
               <div className={styles.noteFooter}>
                 <span className={styles.creator}>
-                  {note.creator.name}
+                  {note.creator?.name || 'Unknown'}
                 </span>
                 <span className={styles.timestamp}>
                   {new Date(note.createdAt).toLocaleDateString('en-US', {
@@ -525,6 +540,21 @@ export default function LearningSpace({ connection, currentUserId }) {
           ))
         )}
       </div>
+
+      {/* Homework Section - Shows homework assignments separately */}
+      {notes.some(note => note.tags.includes('HOMEWORK')) && (
+        <div className={styles.homeworkContainer}>
+          <h2 className={styles.sectionTitle}>
+             Homework Assignments
+          </h2>
+          <HomeworkSection
+            notes={notes}
+            currentUserId={currentUserId}
+            isMentor={isMentor}
+            onStatusChange={loadNotes}
+          />
+        </div>
+      )}
 
       {viewingNote && (
         <div className={styles.modal} onClick={closeModal}>
@@ -572,7 +602,7 @@ export default function LearningSpace({ connection, currentUserId }) {
 
               <div className={styles.viewNoteFooter}>
                 <span className={styles.creator}>
-                  Created by {viewingNote.creator.name}
+                  Created by {viewingNote.creator?.name || 'Unknown'}
                 </span>
                 <span className={styles.timestamp}>
                   {new Date(viewingNote.createdAt).toLocaleDateString('en-US', {

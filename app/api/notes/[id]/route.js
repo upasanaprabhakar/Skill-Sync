@@ -1,4 +1,3 @@
-// app/api/notes/[id]/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
 import { unlink } from 'fs/promises';
@@ -19,12 +18,11 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    // Get the note with connection info
     const note = await prisma.note.findUnique({
       where: { id: noteId },
       include: {
-        connection: {
-          select: { mentorId: true, studentId: true }
+        skillGroup: {
+          select: { mentorId: true }
         }
       }
     });
@@ -33,15 +31,13 @@ export async function PATCH(request, { params }) {
       return NextResponse.json({ error: 'Note not found' }, { status: 404 });
     }
 
-    // Verify user is the mentor
-    if (note.connection.mentorId !== userId) {
+    if (note.skillGroup.mentorId !== userId) {
       return NextResponse.json(
         { error: 'Only mentors can edit notes' },
         { status: 403 }
       );
     }
 
-    // Build update data object
     const updateData = {};
     if (title !== undefined) updateData.title = title.trim();
     if (content !== undefined) updateData.content = content.trim();
@@ -82,12 +78,11 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    // Get the note with connection info
     const note = await prisma.note.findUnique({
       where: { id: noteId },
       include: {
-        connection: {
-          select: { mentorId: true, studentId: true }
+        skillGroup: {
+          select: { mentorId: true }
         }
       }
     });
@@ -96,15 +91,13 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Note not found' }, { status: 404 });
     }
 
-    // Verify user is the mentor
-    if (note.connection.mentorId !== userId) {
+    if (note.skillGroup.mentorId !== userId) {
       return NextResponse.json(
         { error: 'Only mentors can delete notes' },
         { status: 403 }
       );
     }
 
-    // Delete associated file if exists
     if (note.fileUrl) {
       try {
         const filePath = join(process.cwd(), 'public', note.fileUrl);
@@ -114,11 +107,9 @@ export async function DELETE(request, { params }) {
         }
       } catch (fileError) {
         console.error('Error deleting file:', fileError);
-        // Continue with note deletion even if file deletion fails
       }
     }
 
-    // Delete the note
     await prisma.note.delete({
       where: { id: noteId }
     });

@@ -319,3 +319,9 @@
     font-size: 16px; /* Prevents zoom on iOS */
   }
 }
+
+.sendBtn:disabled {
+  background: linear-gradient(135deg, #A5B4FC 0%, #C4B5FD 100%);
+  cursor: not-allowed;
+  opacity: 0.7;
+}

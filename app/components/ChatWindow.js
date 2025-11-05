@@ -13,6 +13,7 @@ export default function ChatWindow({ connection, currentUserId, onClose }) {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [isOtherUserOnline, setIsOtherUserOnline] = useState(false);
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
 
@@ -29,6 +30,9 @@ export default function ChatWindow({ connection, currentUserId, onClose }) {
       console.log('🔗 Joining connection room:', connection.id);
       
       socket.emit('join-connection', connection.id);
+      
+      // Request online status for the other user
+      socket.emit('check-user-status', { userId: otherUser.id });
 
       const handleNewMessage = (message) => {
         console.log('📨 Received new message:', message);
@@ -46,21 +50,48 @@ export default function ChatWindow({ connection, currentUserId, onClose }) {
         }
       };
 
+      const handleUserOnline = ({ userId }) => {
+        if (userId === otherUser.id) {
+          console.log('✅ User is online:', userId);
+          setIsOtherUserOnline(true);
+        }
+      };
+
+      const handleUserOffline = ({ userId }) => {
+        if (userId === otherUser.id) {
+          console.log('❌ User is offline:', userId);
+          setIsOtherUserOnline(false);
+        }
+      };
+
+      const handleUserStatus = ({ userId, isOnline }) => {
+        if (userId === otherUser.id) {
+          console.log('📊 User status:', userId, isOnline);
+          setIsOtherUserOnline(isOnline);
+        }
+      };
+
       socket.on('new-message', handleNewMessage);
       socket.on('user-typing', handleUserTyping);
+      socket.on('user-online', handleUserOnline);
+      socket.on('user-offline', handleUserOffline);
+      socket.on('user-status', handleUserStatus);
 
       return () => {
         console.log('🚪 Leaving connection room:', connection.id);
         socket.emit('leave-connection', connection.id);
         socket.off('new-message', handleNewMessage);
         socket.off('user-typing', handleUserTyping);
+        socket.off('user-online', handleUserOnline);
+        socket.off('user-offline', handleUserOffline);
+        socket.off('user-status', handleUserStatus);
         
         if (typingTimeoutRef.current) {
           clearTimeout(typingTimeoutRef.current);
         }
       };
     }
-  }, [socket, isConnected, connection.id, currentUserId]);
+  }, [socket, isConnected, connection.id, currentUserId, otherUser.id]);
 
   useEffect(() => {
     scrollToBottom();
@@ -191,6 +222,12 @@ export default function ChatWindow({ connection, currentUserId, onClose }) {
     onClose();
   };
 
+  const getStatusText = () => {
+    if (!isConnected) return 'Connecting...';
+    if (isTyping) return <span className={styles.typingIndicator}>typing...</span>;
+    return isOtherUserOnline ? 'Online' : 'Offline';
+  };
+
   if (loading) {
     return (
       <div className={styles.chatWindow}>
@@ -225,15 +262,7 @@ export default function ChatWindow({ connection, currentUserId, onClose }) {
           <div>
             <h3>{otherUser?.name || 'Unknown User'}</h3>
             <span className={styles.status}>
-              {isConnected ? (
-                isTyping ? (
-                  <span className={styles.typingIndicator}>typing...</span>
-                ) : (
-                  'Active'
-                )
-              ) : (
-                'Connecting...'
-              )}
+              {getStatusText()}
             </span>
           </div>
         </div>

@@ -675,3 +675,23 @@
     font-size: 0.813rem;
   }
 }
+/* Add these styles to your existing LearningSpace.module.css file */
+
+.homeworkContainer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 3px solid #f3f4f6;
+}
+
+.sectionTitle {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Optional: Add some breathing room at the bottom */
+.learningSpace {
+  padding-bottom: 2rem;
+}
+

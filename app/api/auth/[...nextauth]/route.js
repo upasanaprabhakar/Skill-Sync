@@ -8,7 +8,8 @@ const globalForPrisma = global;
 const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-const authHandler = NextAuth({
+// EXPORT authOptions so other files can import it
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -29,7 +30,7 @@ const authHandler = NextAuth({
         if (!isValid) return null;
 
         return {
-          id: user.id,
+          id: user.id.toString(), // Convert to string for JWT
           email: user.email,
           name: user.name,
         };
@@ -63,6 +64,8 @@ const authHandler = NextAuth({
       return session;
     },
   },
-});
+};
+
+const authHandler = NextAuth(authOptions);
 
 export { authHandler as GET, authHandler as POST };

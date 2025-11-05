@@ -1,5 +1,3 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -29,6 +27,14 @@ enum NoteTag {
   GENERAL
 }
 
+enum SessionStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  MISSED
+}
+
 model User {
   id              Int       @id @default(autoincrement())
   email           String    @unique
@@ -44,11 +50,16 @@ model User {
   
   mentorConnections   Connection[] @relation("MentorConnections")
   studentConnections  Connection[] @relation("StudentConnections")
+  
+  mentorSkillGroups   SkillGroup[] @relation("MentorSkillGroups")
 
   sentMessages        Message[]    @relation("SentMessages")
   receivedMessages    Message[]    @relation("ReceivedMessages")
   
   notes               Note[]       @relation("UserNotes")
+  
+  reviewsGiven        Review[]     @relation("StudentReviews")
+  reviewsReceived     Review[]     @relation("MentorReviews")
 
   @@map("users")
 }
@@ -63,23 +74,47 @@ model Skill {
   knownBy     User[]    @relation("UserKnownSkills")
   learningBy  User[]    @relation("UserLearningSkills")
   
+  skillGroups SkillGroup[]
+  
   @@map("skills")
 }
 
-model Connection {
-  id          Int              @id @default(autoincrement())
+model SkillGroup {
+  id          Int       @id @default(autoincrement())
   mentorId    Int
-  studentId   Int
-  status      ConnectionStatus @default(PENDING)
-  message     String?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  skillId     Int
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   
-  mentor      User             @relation("MentorConnections", fields: [mentorId], references: [id], onDelete: Cascade)
-  student     User             @relation("StudentConnections", fields: [studentId], references: [id], onDelete: Cascade)
-
-  messages    Message[]
+  mentor      User      @relation("MentorSkillGroups", fields: [mentorId], references: [id], onDelete: Cascade)
+  skill       Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  connections Connection[]
   notes       Note[]
+  
+  @@unique([mentorId, skillId])
+  @@map("skill_groups")
+}
+
+model Connection {
+  id            Int              @id @default(autoincrement())
+  mentorId      Int
+  studentId     Int
+  skillGroupId  Int?
+  status        ConnectionStatus @default(PENDING)
+  message       String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  mentor        User             @relation("MentorConnections", fields: [mentorId], references: [id], onDelete: Cascade)
+  student       User             @relation("StudentConnections", fields: [studentId], references: [id], onDelete: Cascade)
+  skillGroup    SkillGroup?      @relation(fields: [skillGroupId], references: [id], onDelete: SetNull)
+
+  messages      Message[]
+  review        Review?
+  sessions      Session[]
 
   @@unique([mentorId, studentId])
   @@map("connections")
@@ -105,7 +140,7 @@ model Message {
 
 model Note {
   id           Int        @id @default(autoincrement())
-  connectionId Int
+  skillGroupId Int
   title        String
   content      String     @db.Text
   createdBy    Int
@@ -114,13 +149,77 @@ model Note {
   fileUrl      String?
   fileName     String?
   fileType     String?
+  isCompleted  Boolean    @default(false)  
+  completedAt  DateTime?                   
+  completedBy  Int?                        
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  
+  skillGroup   SkillGroup @relation(fields: [skillGroupId], references: [id], onDelete: Cascade)
+  creator      User       @relation("UserNotes", fields: [createdBy], references: [id])
+  
+  @@index([skillGroupId])
+  @@index([createdBy])
+  @@index([isCompleted])  
+  @@map("notes")
+}
+
+model Review {
+  id           Int        @id @default(autoincrement())
+  rating       Int
+  comment      String?    @db.Text
+  connectionId Int        @unique
+  studentId    Int
+  mentorId     Int
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   
   connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
-  creator      User       @relation("UserNotes", fields: [createdBy], references: [id])
+  student      User       @relation("StudentReviews", fields: [studentId], references: [id], onDelete: Cascade)
+  mentor       User       @relation("MentorReviews", fields: [mentorId], references: [id], onDelete: Cascade)
+  
+  @@index([mentorId])
+  @@index([studentId])
+  @@map("reviews")
+}
+
+model Session {
+  id              Int           @id @default(autoincrement())
+  connectionId    Int
+  title           String
+  description     String?       @db.Text
+  startTime       DateTime
+  endTime         DateTime
+  duration        Int
+  meetingLink     String?
+  status          SessionStatus @default(PENDING)
+  notes           String?       @db.Text
+  joinedByMentor  Boolean       @default(false)
+  joinedByStudent Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  connection      Connection    @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  reminders       Reminder[]
   
   @@index([connectionId])
-  @@index([createdBy])
-  @@map("notes")
+  @@index([startTime])
+  @@index([status])
+  @@map("sessions")
+}
+
+model Reminder {
+  id            Int       @id @default(autoincrement())
+  sessionId     Int
+  reminderType  String
+  sentAt        DateTime?
+  scheduledFor  DateTime
+  sent          Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@index([sessionId])
+  @@index([scheduledFor, sent])
+  @@map("reminders")
 }

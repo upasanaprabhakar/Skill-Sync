@@ -1,0 +1,411 @@
+/* app/components/SessionBooking.module.css */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: white;
+  border-radius: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #F3F4F6;
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 0.25rem 0;
+}
+
+.subtitle {
+  font-size: 0.938rem;
+  color: #6B7280;
+  margin: 0;
+}
+
+.closeBtn {
+  background: #F3F4F6;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6B7280;
+}
+
+.closeBtn:hover {
+  background: #E5E7EB;
+  transform: rotate(90deg);
+}
+
+/* Progress Steps */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  background: #F9FAFB;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E5E7EB;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.step.active .stepNumber {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.step span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.stepLine {
+  width: 60px;
+  height: 2px;
+  background: #E5E7EB;
+  margin: 0 0.5rem;
+}
+
+/* Content */
+.content {
+  padding: 2rem;
+  min-height: 400px;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stepContent h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0;
+}
+
+.helperText {
+  font-size: 0.938rem;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Selected Time Display */
+.selectedTime {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #F0F9FF;
+  border: 2px solid #BFDBFE;
+  border-radius: 0.75rem;
+}
+
+.selectedTime strong {
+  font-size: 1rem;
+  color: #1E40AF;
+  display: block;
+}
+
+.selectedTime p {
+  font-size: 0.875rem;
+  color: #3B82F6;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Form Groups */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input,
+.select,
+.textarea {
+  padding: 0.75rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 0.75rem;
+  font-size: 0.938rem;
+  color: #1F2937;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.charCount {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+  text-align: right;
+}
+
+.formGroup .helperText {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  font-style: italic;
+}
+
+/* Confirm Card */
+.confirmCard {
+  background: #F9FAFB;
+  border: 2px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirmRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.confirmRow:last-child {
+  border-bottom: none;
+}
+
+.confirmLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6B7280;
+}
+
+.confirmValue {
+  font-size: 0.938rem;
+  color: #1F2937;
+  word-break: break-word;
+}
+
+.confirmValue a {
+  color: #6366F1;
+  text-decoration: none;
+}
+
+.confirmValue a:hover {
+  text-decoration: underline;
+}
+
+/* Info Box */
+.infoBox {
+  background: #EFF6FF;
+  border: 2px solid #BFDBFE;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.infoBox p {
+  font-size: 0.875rem;
+  color: #1E40AF;
+  margin: 0;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.backBtn,
+.nextBtn,
+.confirmBtn {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.backBtn {
+  background: #F3F4F6;
+  color: #374151;
+  border: 2px solid #E5E7EB;
+}
+
+.backBtn:hover:not(:disabled) {
+  background: #E5E7EB;
+}
+
+.nextBtn,
+.confirmBtn {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  color: white;
+}
+
+.nextBtn:hover:not(:disabled),
+.confirmBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+.backBtn:disabled,
+.nextBtn:disabled,
+.confirmBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal {
+    max-width: 100%;
+    border-radius: 1rem;
+  }
+
+  .header {
+    padding: 1.5rem;
+  }
+
+  .header h2 {
+    font-size: 1.25rem;
+  }
+
+  .steps {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .step span {
+    display: none;
+  }
+
+  .stepLine {
+    width: 40px;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+
+  .confirmRow {
+    grid-template-columns: 100px 1fr;
+    gap: 0.75rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .backBtn,
+  .nextBtn,
+  .confirmBtn {
+    width: 100%;
+  }
+}
+
+.infoNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #EFF6FF;
+  border: 2px solid #BFDBFE;
+  border-radius: 0.75rem;
+  font-size: 0.938rem;
+  color: #1E40AF;
+  line-height: 1.5;
+}
+
+.infoIcon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
