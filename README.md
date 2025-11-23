@@ -12,7 +12,7 @@
 [![Socket.io](https://img.shields.io/badge/Socket.io-Real--time-010101?style=for-the-badge&logo=socket.io)](https://socket.io/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-[Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Architecture](#-architecture) • [Contributing](#-contributing)
+📋 [Features](#-features) | 🎨 [UI Showcase](#-user-interface) | 📦 [Installation](#-installation) | 🏗️ [Architecture](#-architecture) | 🤝 [Contributing](#-contributing) | 🗺️ [Roadmap](#-roadmap)
 
 ![SkillSync Banner](https://via.placeholder.com/1200x400/6366f1/ffffff?text=SkillSync+-+Your+Learning+Journey+Starts+Here)
 
