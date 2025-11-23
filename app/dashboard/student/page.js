@@ -815,7 +815,7 @@ export default function StudentDashboard() {
                       Connect with mentors to access their skill groups and learning materials
                     </p>
                     <button 
-                      className={styles.primaryBtn}
+                      className={styles.primaryBtn2}
                       onClick={() => setActiveTab('browse')}
                     >
                       Browse Mentors
@@ -1012,7 +1012,7 @@ export default function StudentDashboard() {
                     <UsersIcon size={64} />
                     <p>No connections yet</p>
                     <button 
-                      className={styles.primaryBtn}
+                      className={styles.primaryBtn2}
                       onClick={() => setActiveTab('browse')}
                     >
                       Browse Mentors
