@@ -556,6 +556,6 @@ If you find SkillSync helpful, please consider:
 💡 Suggesting new features  
 📢 Sharing with others
 
-**Made with ❤️ by the SkillSync Team**
+**Made with ❤️ by Upasana**
 
 [Back to Top ⬆](#-skillsync)
