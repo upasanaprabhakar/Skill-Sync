@@ -29,13 +29,11 @@ export default function DashboardPage() {
       
       if (data.user) {
         setUser(data.user);
-        // Only redirect if user has completed profile with role AND skills
         if (data.user.role === 'MENTOR' && data.user.skillsKnown?.length > 0) {
           router.push('/dashboard/mentor');
         } else if (data.user.role === 'STUDENT' && data.user.skillsLearning?.length > 0) {
           router.push('/dashboard/student');
         }
-        // If user has role but no skills, stay on this page to let them choose/update
       }
     } catch (error) {
       console.error('Error loading user:', error);
@@ -47,8 +45,6 @@ export default function DashboardPage() {
 
   const handleRoleSelection = async (role) => {
     if (!user) return;
-
-    // Redirect to profile page to complete setup with skills
     router.push(`/profile?role=${role}`);
   };
 
@@ -89,7 +85,7 @@ export default function DashboardPage() {
         <div className={styles.welcomeSection}>
           <h1>Welcome to SkillSync, {user?.name}!</h1>
           <p className={styles.subtitle}>
-            Let's get you started on your learning journey. Choose how you'd like to participate:
+            Let&apos;s get you started on your learning journey. Choose how you&apos;d like to participate:
           </p>
         </div>
 

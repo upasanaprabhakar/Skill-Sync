@@ -54,7 +54,7 @@ export default function LandingPage() {
             </div>
             <p>
               SkillSync connects students with experienced mentors to help them achieve 
-              their goals. Whether you're looking to learn a new skill or share your 
+              their goals. Whether you&apos;re looking to learn a new skill or share your 
               expertise, SkillSync has you covered.
             </p>
             <div className={styles.heroButtons}>

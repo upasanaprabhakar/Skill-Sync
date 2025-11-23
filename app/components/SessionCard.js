@@ -354,7 +354,8 @@ export default function SessionCard({ session, currentUserId, onCancel, onConfir
                 <XIcon size={20} />
               </button>
             </div>
-            <p>Are you sure you want to cancel "{session.title}"? This action cannot be undone.</p>
+            {/* ✅ FIXED: Escaped quotes */}
+            <p>Are you sure you want to cancel &quot;{session.title}&quot;? This action cannot be undone.</p>
             <div className={styles.modalActions}>
               <button 
                 className={styles.modalCancelBtn}

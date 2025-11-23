@@ -38,7 +38,16 @@ export default function LearningSpace({ skillGroup, currentUserId }) {
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Safety check - return early if skillGroup is not loaded
+  const isMentor = skillGroup?.mentorId === currentUserId;
+
+  // ✅ FIXED: Move useEffect BEFORE any conditional returns
+  useEffect(() => {
+    if (skillGroup?.id) {
+      loadNotes();
+    }
+  }, [skillGroup?.id]);
+
+  // ✅ NOW safe to have early return after all hooks
   if (!skillGroup) {
     return (
       <div className={styles.loadingContainer}>
@@ -47,14 +56,6 @@ export default function LearningSpace({ skillGroup, currentUserId }) {
       </div>
     );
   }
-
-  const isMentor = skillGroup.mentorId === currentUserId;
-
-  useEffect(() => {
-    if (skillGroup?.id) {
-      loadNotes();
-    }
-  }, [skillGroup?.id]);
 
   const loadNotes = async () => {
     try {

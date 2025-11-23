@@ -247,6 +247,7 @@ export default function TimeSlotPicker({ connection, onTimeSlotSelect }) {
                     className={styles.timeInput}
                     placeholder="HH:MM"
                   />
+                  {/* ✅ FIXED: Escaped apostrophe */}
                   <span className={styles.timeHint}>Any time works! Mentor will confirm.</span>
                 </div>
               </div>
@@ -262,7 +263,7 @@ export default function TimeSlotPicker({ connection, onTimeSlotSelect }) {
 
               <p className={styles.proposalNote}>
                  <strong>Flexible scheduling:</strong> Propose any time that works for you. 
-                Your mentor will review and confirm if they're available.
+                Your mentor will review and confirm if they&apos;re available.
               </p>
             </div>
           </>

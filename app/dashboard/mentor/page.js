@@ -376,12 +376,13 @@ export default function MentorDashboard() {
   };
 
   const handleViewStudentProgress = (student) => {
-  console.log('📊 Opening progress for student:', student);
-  setActiveTab('progress'); 
-  setSelectedStudentForProgress(student);
-  setActiveChatConnection(null);
-  setActiveSkillGroup(null);
-};
+    console.log('Opening progress for student:', student);
+    setActiveTab('progress'); 
+    setSelectedStudentForProgress(student);
+    setActiveChatConnection(null);
+    setActiveSkillGroup(null);
+  };
+
   const handleCloseChat = () => {
     setActiveChatConnection(null);
   };
@@ -534,7 +535,7 @@ export default function MentorDashboard() {
             <div className={styles.header}>
               <div>
                 <h1>Student Progress</h1>
-                <p>Track your students' learning journey and achievements</p>
+                <p>Track your students&apos; learning journey and achievements</p>
               </div>
             </div>
 
@@ -797,7 +798,7 @@ export default function MentorDashboard() {
                       </div>
                     </div>
                     {connection.message && (
-                      <p className={styles.message}>"{connection.message}"</p>
+                      <p className={styles.message}>&quot;{connection.message}&quot;</p>
                     )}
                     {connection.student?.skillsLearning && connection.student.skillsLearning.length > 0 && (
                       <div className={styles.cardSkills}>
@@ -839,7 +840,7 @@ export default function MentorDashboard() {
             <div className={styles.header}>
               <div>
                 <h1>My Students</h1>
-                <p>Students you're currently mentoring</p>
+                <p>Students you&apos;re currently mentoring</p>
               </div>
             </div>
 
@@ -864,7 +865,8 @@ export default function MentorDashboard() {
                     </div>
                     {connection.student?.bio && (
                       <p className={styles.bio}>{connection.student.bio}</p>
-                    )}{connection.student?.skillsLearning && connection.student.skillsLearning.length > 0 && (
+                    )}
+                    {connection.student?.skillsLearning && connection.student.skillsLearning.length > 0 && (
                       <div className={styles.cardSkills}>
                         <span className={styles.label}>Learning:</span>
                         <div className={styles.skillsList}>
@@ -974,7 +976,7 @@ export default function MentorDashboard() {
                         </div>
                       </div>
                       {connection.review.comment && (
-                        <p className={styles.reviewComment}>"{connection.review.comment}"</p>
+                        <p className={styles.reviewComment}>&quot;{connection.review.comment}&quot;</p>
                       )}
                       {connection.skillGroup && (
                         <div className={styles.reviewContext}>
@@ -1046,7 +1048,7 @@ export default function MentorDashboard() {
                     </div>
                   )}
                   
-                  <p className={styles.bio}>{user?.bio || 'No bio added yet. Click "Edit Profile" to add one.'}</p>
+                  <p className={styles.bio}>{user?.bio || 'No bio added yet. Click &quot;Edit Profile&quot; to add one.'}</p>
                   
                   <div className={styles.profileSkills}>
                     <h3>My Expertise:</h3>
@@ -1096,7 +1098,6 @@ export default function MentorDashboard() {
         )}
       </main>
 
-      {/* Create Skill Group Modal */}
       {showCreateGroupModal && (
         <div className={styles.modal} onClick={() => setShowCreateGroupModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
