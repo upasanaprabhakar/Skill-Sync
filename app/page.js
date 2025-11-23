@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import {
   Logo, UsersIcon, SearchIcon, ChartIcon, BookIcon, TargetIcon,
-  ArrowRightIcon, HeartIcon
+  ArrowRightIcon, HeartIcon, SparklesIcon
 } from './components/icons';
 
 export default function LandingPage() {
@@ -37,6 +37,7 @@ export default function LandingPage() {
               className="btn btn-primary"
               onClick={() => router.push('/register')}
             >
+              <SparklesIcon size={24} />
               Get Started
             </button>
           </div>
@@ -46,7 +47,11 @@ export default function LandingPage() {
       <section id="home" className={styles.hero}>
         <div className="container">
           <div className={styles.heroContent}>
-            <h1>Connect, Learn, and Grow with <span className={styles.highlight}>SkillSync</span></h1>
+            <div className={styles.heroTitleWrapper}>
+              <SparklesIcon size={48} className={styles.heroSparkle} />
+              <h1>Connect, Learn, and Grow with <span className={styles.highlight}>SkillSync</span></h1>
+              <SparklesIcon size={42} className={styles.heroSparkle} />
+            </div>
             <p>
               SkillSync connects students with experienced mentors to help them achieve 
               their goals. Whether you're looking to learn a new skill or share your 
@@ -57,6 +62,7 @@ export default function LandingPage() {
                 className="btn btn-primary"
                 onClick={() => router.push('/register')}
               >
+                <SparklesIcon size={24} />
                 Find a Mentor
                 <ArrowRightIcon size={20} />
               </button>
@@ -73,7 +79,10 @@ export default function LandingPage() {
 
       <section id="about" className={styles.howItWorks}>
         <div className="container">
-          <h2 className={styles.sectionTitle}>How SkillSync Works</h2>
+          <div className={styles.sectionTitleWrapper}>
+            <SparklesIcon size={36} />
+            <h2 className={styles.sectionTitle}>How SkillSync Works</h2>
+          </div>
           <div className={styles.stepsGrid}>
             <div className={styles.stepCard}>
               <div className={styles.stepIcon}>
@@ -116,7 +125,10 @@ export default function LandingPage() {
 
       <section id="skills" className={styles.exploreSkills}>
         <div className="container">
-          <h2 className={styles.sectionTitle}>Explore Popular Skills</h2>
+          <div className={styles.sectionTitleWrapper}>
+            <h2 className={styles.sectionTitle}>Explore Popular Skills</h2>
+            <SparklesIcon size={28} />
+          </div>
           <p className={styles.sectionSubtitle}>
             Discover the skills you can learn or teach on SkillSync
           </p>
@@ -170,7 +182,11 @@ export default function LandingPage() {
       <section className={styles.ctaBanner}>
         <div className="container">
           <div className={styles.ctaContent}>
-            <h2>Ready to Start Your Journey?</h2>
+            <div className={styles.ctaTitleWrapper}>
+              <SparklesIcon size={32} />
+              <h2>Ready to Start Your Journey?</h2>
+              <SparklesIcon size={32} />
+            </div>
             <p>
               Join SkillSync today and connect with mentors or students who share 
               your passion for learning and growth.
@@ -180,6 +196,7 @@ export default function LandingPage() {
                 className="btn btn-primary"
                 onClick={() => router.push('/register')}
               >
+                <SparklesIcon size={20} />
                 Join as Mentor
                 <ArrowRightIcon size={20} />
               </button>

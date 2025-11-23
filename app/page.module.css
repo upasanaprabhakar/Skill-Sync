@@ -44,7 +44,7 @@
   text-decoration: none;
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1.05rem;
   transition: color 0.3s ease;
   position: relative;
   letter-spacing: -0.01em;
@@ -645,3 +645,89 @@
   }
 }
 
+.heroSparkle, .cardSparkle {
+  color: #fbbf24;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.sectionTitleWrapper, .heroTitleWrapper, .ctaTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Add these styles to your page.module.css file */
+
+/* Hero sparkles - largest */
+.heroSparkle {
+  transform: scale(2.5);
+  display: inline-block;
+  margin: 0 20px;
+  color: #fbbf24;
+  animation: sparkleGlow 2s ease-in-out infinite;
+}
+
+/* Section title sparkles */
+.sectionTitleWrapper svg {
+  transform: scale(2);
+  display: inline-block;
+  margin: 0 16px;
+  color: #fbbf24;
+}
+
+/* Card sparkles in skill cards */
+.cardSparkle {
+  transform: scale(1.8);
+  display: inline-block;
+  margin-left: 12px;
+  color: #fbbf24;
+  animation: sparkleGlow 2s ease-in-out infinite;
+}
+
+/* CTA banner sparkles */
+.ctaTitleWrapper svg {
+  transform: scale(2.2);
+  display: inline-block;
+  margin: 0 18px;
+  color: #fbbf24;
+}
+
+/* Button sparkles */
+.btn svg {
+  transform: scale(1.5);
+  display: inline-block;
+  margin: 0 8px;
+}
+
+/* Sparkle glow animation */
+@keyframes sparkleGlow {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.8));
+  }
+}
+
+/* Optional: Add rotation animation */
+@keyframes sparkleRotate {
+  0% {
+    transform: scale(2) rotate(0deg);
+  }
+  100% {
+    transform: scale(2) rotate(360deg);
+  }
+}
+
+/* Apply rotation to hero sparkles (optional) */
+.heroSparkle {
+  animation: sparkleGlow 2s ease-in-out infinite, sparkleRotate 10s linear infinite;
+}
