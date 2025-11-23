@@ -18,8 +18,6 @@
 
 </div>
 
----
-
 ## 🌟 Overview
 
 **SkillSync** is a modern, full-stack mentorship platform designed to revolutionize how people learn and share knowledge. Whether you're a student seeking guidance or a mentor eager to share your expertise, SkillSync creates meaningful connections that foster growth and learning.
@@ -40,8 +38,6 @@ SkillSync addresses these challenges with:
 - 📚 **Learning Spaces** - Organized hubs for sharing notes, resources, and files
 - ⭐ **Review System** - Rate mentors and build trust within the community
 - 🔔 **Smart Notifications** - Stay updated on messages, connections, and new content
-
----
 
 ## 🚀 Features
 
@@ -100,15 +96,23 @@ SkillSync addresses these challenges with:
 </tr>
 </table>
 
----
-
 ## 🎨 User Interface
 
 <div align="center">
 
-</div>
+### Student Dashboard
+![Student Dashboard](https://via.placeholder.com/800x450/667eea/ffffff?text=Student+Dashboard)
 
----
+### Mentor Dashboard  
+![Mentor Dashboard](https://via.placeholder.com/800x450/764ba2/ffffff?text=Mentor+Dashboard)
+
+### Real-Time Chat
+![Chat Interface](https://via.placeholder.com/800x450/10b981/ffffff?text=Real-Time+Chat)
+
+### Review System
+![Review System](https://via.placeholder.com/800x450/f59e0b/ffffff?text=Review+%26+Rating+System)
+
+</div>
 
 ## 🏗️ Architecture
 
@@ -221,8 +225,6 @@ API Layer
 - **Notes**: File attachments and learning materials
 - **Reviews**: Rating and feedback system
 
----
-
 ## 📦 Installation
 
 ### Prerequisites
@@ -262,8 +264,6 @@ npm run dev
 
 Visit `http://localhost:3000` to see your application running! 🎉
 
----
-
 ## 🗂️ Project Structure
 
 ```
@@ -293,8 +293,6 @@ skillsync/
 │   └── uploads/                # User-uploaded files
 └── server.js                   # Socket.io server
 ```
-
----
 
 ## 🔧 Configuration
 
@@ -329,8 +327,6 @@ Our database uses **Prisma ORM** with PostgreSQL. Key models include:
 - **SkillGroup** - Learning groups
 - **Note** - Shared learning materials
 - **Review** - Ratings and feedback
-
----
 
 ## 📚 API Documentation
 
@@ -380,8 +376,6 @@ POST   /api/skill-groups                 // Create group
 GET    /api/skill-groups/:id             // Get group details
 ```
 
----
-
 ## 🔌 WebSocket Events
 
 SkillSync uses Socket.io for real-time features:
@@ -401,8 +395,6 @@ socket.on('message-notification', (data) => { /* New message */ });
 socket.on('connection-update', (data) => { /* Status change */ });
 socket.on('note-added', (data) => { /* New learning material */ });
 ```
-
----
 
 ## 🎯 Usage Examples
 
@@ -424,8 +416,6 @@ socket.on('note-added', (data) => { /* New learning material */ });
 5. **Chat with students** to answer questions
 6. **Build your reputation** through reviews
 
----
-
 ## 🧪 Testing
 
 ```bash
@@ -441,8 +431,6 @@ npm run test:e2e
 # Generate test coverage
 npm run test:coverage
 ```
-
----
 
 ## 🚀 Deployment
 
@@ -476,8 +464,6 @@ docker run -p 3000:3000 skillsync
 3. Run migrations: `npx prisma migrate deploy`
 4. Start the application
 
----
-
 ## 🤝 Contributing
 
 We love contributions! Here's how you can help:
@@ -507,8 +493,6 @@ We love contributions! Here's how you can help:
 - 🌍 Internationalization
 - ♿ Accessibility improvements
 
----
-
 ## 🗺️ Roadmap
 
 ### Version 2.0 (Q1 2025)
@@ -535,8 +519,6 @@ We love contributions! Here's how you can help:
 - [ ] Gamification and achievements
 - [ ] API for third-party integrations
 
----
-
 ## 📄 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
@@ -557,8 +539,6 @@ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
 
----
-
 ## 🙏 Acknowledgments
 
 [Next.js](https://nextjs.org/) - The React framework for production  
@@ -566,8 +546,6 @@ copies or substantial portions of the Software.
 [Socket.io](https://socket.io/) - Real-time engine  
 [React Hot Toast](https://react-hot-toast.com/) - Notification system  
 All our amazing [contributors](https://github.com/yourusername/skillsync/graphs/contributors)
-
----
 
 ### 💝 Show Your Support
 
