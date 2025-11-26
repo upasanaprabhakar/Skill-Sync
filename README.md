@@ -12,9 +12,11 @@
 [![Socket.io](https://img.shields.io/badge/Socket.io-Real--time-010101?style=for-the-badge&logo=socket.io)](https://socket.io/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-📋 [Features](#-features) | 🎨 [UI Showcase](#-user-interface) | 📦 [Installation](#-installation) | 🏗️ [Architecture](#-architecture) | 🤝 [Contributing](#-contributing) | 🗺️ [Roadmap](#-roadmap)
 
-![SkillSync Banner](https://via.placeholder.com/1200x400/6366f1/ffffff?text=SkillSync+-+Your+Learning+Journey+Starts+Here)
+
+## SkillSync Landing Page
+<img width="1895" height="907" alt="Screenshot 2025-11-25 235116" src="https://github.com/user-attachments/assets/430c4658-341f-4f2d-b8a1-c9435877e8d4" />
+
 
 </div>
 
@@ -100,11 +102,12 @@ SkillSync addresses these challenges with:
 
 <div align="center">
 
-### Student Dashboard
-![Student Dashboard](https://via.placeholder.com/800x450/667eea/ffffff?text=Student+Dashboard)
+## Student Dashboard
+<img width="1900" height="900" alt="Screenshot 2025-11-26 221111" src="https://github.com/user-attachments/assets/c0942455-0b94-4ca7-96c6-f84172c93576" />
 
-### Mentor Dashboard  
-![Mentor Dashboard](https://via.placeholder.com/800x450/764ba2/ffffff?text=Mentor+Dashboard)
+## Mentor Dashboard  
+<img width="1896" height="908" alt="Screenshot 2025-11-26 221258" src="https://github.com/user-attachments/assets/2d40b7e0-5a54-44f3-990b-565cc725d56d" />
+
 
 ### Real-Time Chat
 ![Chat Interface](https://via.placeholder.com/800x450/10b981/ffffff?text=Real-Time+Chat)
